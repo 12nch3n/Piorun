@@ -12,10 +12,10 @@ class PiorunConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False]}
     default_options = {"shared": False}
-    generators = "cmake"
+    generators = ["ycm", "cmake", "cmake_find_package"]
 
     def source(self):
-        self.run("git clone https://github.com/conan-io/hello.git")
+        self.run("git clone https://github.com/enriqur/Piorun.git")
         # This small hack might be useful to guarantee proper /MT /MD linkage
         # in MSVC if the packaged project doesn't have variables to set it
         # properly
@@ -46,5 +46,4 @@ conan_basic_setup()''')
         self.cpp_info.libs = ["Piorun"]
 
     def requirements(self):
-        self.requires("cli11/1.6.1@bincrafters/stable", private=True, override=False)
-        generators = "cmake_find_package"
+        self.requires("docopt/0.6.2@conan/stable", private=True, override=False)

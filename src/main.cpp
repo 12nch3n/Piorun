@@ -1,27 +1,37 @@
-#include "CLI/CLI.hpp"
+#include "docopt.h"
+#include <iostream>
 
-int main(int argc, char **argv) {
+static const char USAGE[] =
+R"(Naval Fate.
 
-    CLI::App app("K3Pi goofit fitter");
-    app.set_help_all_flag("--help-all", "Expand all help");
-    app.add_flag("--random", "Some random flag");
-    CLI::App *start = app.add_subcommand("start", "A great subcommand");
-    CLI::App *stop = app.add_subcommand("stop", "Do you really want to stop?");
-    app.require_subcommand(); // 1 or more
+    Usage:
+      naval_fate ship new <name>...
+      naval_fate ship <name> move <x> <y> [--speed=<kn>]
+      naval_fate ship shoot <x> <y>
+      naval_fate mine (set|remove) <x> <y> [--moored | --drifting]
+      naval_fate (-h | --help)
+      naval_fate --version
 
-    std::string file;
-    start->add_option("-f,--file", file, "File name");
+    Options:
+      -h --help     Show this screen.
+      --version     Show version.
+      --speed=<kn>  Speed in knots [default: 10].
+      --moored      Moored (anchored) mine.
+      --drifting    Drifting mine.
+)";
 
-    CLI::Option *s = stop->add_flag("-c,--count", "Counter");
+int main(int argc, const char** argv)
+{
+    std::map<std::string, docopt::value> args
+        = docopt::docopt(USAGE,
+                         { argv + 1, argv + argc },
+                         true,               // show help if requested
+                         "Naval Fate 2.0");  // version string
 
-    CLI11_PARSE(app, argc, argv);
-
-    std::cout << "Working on --file from start: " << file << std::endl;
-    std::cout << "Working on --count from stop: " << s->count() << ", direct count: " << stop->count("--count")
-              << std::endl;
-    std::cout << "Count of --random flag: " << app.count("--random") << std::endl;
-    for(auto subcom : app.get_subcommands())
-        std::cout << "Subcommand: " << subcom->get_name() << std::endl;
+    for(auto const& arg : args) {
+        std::cout << arg.first <<  arg.second << std::endl;
+    }
 
     return 0;
 }
+
