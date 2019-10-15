@@ -1,4 +1,4 @@
-from conans import ConanFile, CMake, tools
+from conan import ConanFile, CMake, tools
 
 
 class PiorunConan(ConanFile):
@@ -46,4 +46,4 @@ conan_basic_setup()''')
         self.cpp_info.libs = ["Piorun"]
 
     def requirements(self):
-        self.requires("docopt/0.6.2@conan/stable", private=True, override=False)
+        self.requires("docopt/0.6.2@conan/stable", private=False, override=False)
