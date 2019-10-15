@@ -1,5 +1,10 @@
-#include "docopt.h"
+/*
+ * --------------------------------------- 
+ * Copyright (c) 2019 enrique.chen@live.cn
+ * --------------------------------------- 
+ */
 #include <iostream>
+#include "docopt.h"
 
 static const char USAGE[] = R"(Naval Fate.
 
@@ -19,15 +24,13 @@ static const char USAGE[] = R"(Naval Fate.
       --drifting    Drifting mine.
 )";
 
-int main(int argc, const char **argv)
-{
+int main(int argc, const char **argv) {
   std::map<std::string, docopt::value>
       args = docopt::docopt(USAGE,
                             {argv + 1, argv + argc},
                             true,              // show help if requested
                             "Naval Fate 2.0"); // version string
-  for (auto const &arg : args)
-  {
+  for (auto const &arg : args) {
     std::cout << arg.first << arg.second << std::endl;
   }
 
